@@ -1,0 +1,36 @@
+@import url(https://fonts.googleapis.com/css?family=Architects+Daughter);
+body {
+    
+    background-color: rgb(124, 201, 229);
+}
+div {
+    font-family: 'Architects Daughter';
+}
+
+#fraga {
+    position: absolute;
+    top: 10;
+    left: 750;
+    font-size: 20px;
+}
+
+#svar1 {
+    position: absolute;
+    top: 90;
+    left: 750;
+    color: #1919d1;
+}
+
+#svar2 {
+    position: absolute;
+    top: 140;
+    left: 750;
+    color: #c14a4a;
+}
+
+#svar3 {
+    position: absolute;
+    top: 190;
+    left: 750;
+    color: #2aa72a;
+}
