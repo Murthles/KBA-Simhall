@@ -1,5 +1,5 @@
         // Klassen som håller i gubben och dess bild
-        function Gubbe(){
+        function Gubbe() {
             
             this.x = 350;
             this.y = 600;
@@ -8,32 +8,44 @@
             this.img = document.getElementById("gubbeIMG");
         }
 
-        // Klassen som håller i svarsalternativen
-        function DoorSvar() {
-            
-            this.x1 = 70;
-            this.x2 = 130;
-            this.ans = "Blue";
-        }
-
         // Variablerna för bilderna samt svarsalternativen
 
             // Canvas och resterande bilder
         var ctx, 
             c,
-            
-            // g är gubbens klass, d är dörrarnas klass, fs är fråga och svar
-            g,
+            // g är gubbens klass, fs är fråga och svar, sound är för ljuden
+            s,
             d,
+            g,
             fs;
+
+        var ansCounter = 0,
+            arrayCounter = fs[0].fraga;
         
         // Klassen för våra frågor och svar
-        function FragSvar(fraga,s1,s2,s3) {
+        function FragSvar(fraga,s1,s2,s3,rs){
             
             this.fraga = fraga;
             this.svar1 = s1;
             this.svar2 = s2;
             this.svar3 = s3;
+            this.rs = rs;
+        }
+
+        function Door(x1, x2){
+            
+            this.d1x1 = 70;
+            this.d1x2 = 130;
+            this.d2x1 = 300;
+            this.d2x2 = 360;
+            this.d3x1 = 500;
+            this.d3x2 = 560;
+        }
+
+        // Klassen för ljuden
+        function Sound() {
+            
+            this.right = new Audio("ping.mp3");
         }
 
         // Kör gameloopen, laddar bilderna, svaren och frågorna
@@ -41,22 +53,24 @@
             
             // Laddar klasserna
             g = new Gubbe(); 
-            d = new DoorSvar();
-            fs = [new FragSvar("Varför duschar man innan man hoppar i basängen?", "1. För att bakterierna inte ska reagera med kloret i basängen.", "2. För att vattnet inte ska bli grönt.", "3. För att de inte ska behöva städa."),
-                  new FragSvar("Vad händer när kloret i basängen reagerar med bakterierna?", "1. Det bildas smutsiga saker i luften.", "2. Det bildas en sorts gas i luften.", "3. Det blir smutsigt på golven."),
-                  new FragSvar("Vilken åldersgrupp är sämst på att duscha innan de hoppar i basängen?", "1. 30 år och uppåt.", "2. Tånåringar, 13 - 19 år.", "3. Barn, 3 - 13 år.")];
+            d = new Door();
+            s = new Sound();
+            fs = [new FragSvar("Varför duschar man innan man hoppar i basängen?", "1. För att bakterierna inte ska reagera med kloret i basängen.", "2. För att vattnet inte ska bli grönt.", "3. För att de inte ska behöva städa.", "Blue"),
+                  
+                  new FragSvar("Vad händer när kloret i basängen reagerar med bakterierna?", "1. Det bildas smutsiga saker i luften.", "2. Det bildas en sorts gas i luften.", "3. Det blir smutsigt på golven.", "Red"),
+                  
+                  new FragSvar("Vilken åldersgrupp är sämst på att duscha innan de hoppar i basängen?", "1. 30 år och uppåt.", "2. Tånåringar, 13 - 19 år.", "3. Barn, 3 - 13 år.", "Green")];
             
             // Laddar bilderna och gameloopen
             c = document.getElementById("c");
             ctx = c.getContext("2d");
             window.setInterval(gameLoop, 20);
             
-            // Skriver ut fråga1 och respektive svar
+            // Skriver ut fråga 1 och respektive svar
             document.getElementById("fraga").innerHTML = fs[0].fraga;
             document.getElementById("svar1").innerHTML = fs[0].svar1;
             document.getElementById("svar2").innerHTML = fs[0].svar2;
             document.getElementById("svar3").innerHTML = fs[0].svar3;
-            
         }
 
         // Gameloopen som kallar på de andra funktionerna
@@ -169,42 +183,74 @@
             }
         }
         
-        // Kollar ifall man har hittat rätt dörr
+        // Kollar ifall man går in i rätt eller fel dörr
         function doorCheck(){
             
-            // Kollar ifall man har rätt svar på fråga 1
-            if (g.x > d.x1 && g.x < d.x2 && g.y === 290 && d.ans === "Blue"){
+            if(g.x > 70 && g.x < 130 && g.y === 290){
                 
-                // Ändrar gubbens Y-koordinat
-                g.y = 600;
+                answerCheck("Blue");
+            }
+            
+            if(g.x > 300 && g.x < 360 && g.y === 290){
                 
-                // Ändrar svarsalternativen 
-                d.x1 = 300;
-                d.x2 = 360;
-                d.ans = "Red";
+                answerCheck("Red");
+            }
+            
+            if(g.x > 500 && g.x < 560 && g.y === 290){
                 
-                // Ställer om frågorna och svaren till nästa set av frågor och svar
-                document.getElementById("fraga").innerHTML = fs[1].fraga;
-                document.getElementById("svar1").innerHTML = fs[1].svar1;
-                document.getElementById("svar2").innerHTML = fs[1].svar2;
-                document.getElementById("svar3").innerHTML = fs[1].svar3;
-                
-                // Kollar ifall man har rätt svar på svar 2
-            } else if(g.x > d.x1 && g.x < d.x2 && g.y === 290 && d.ans === "Red"){
+                answerCheck("Green");
+            }
+        }
+
+        function answerCheck(svar){
+        
+                if(arrayCounter === svar){
                     
-                    // Ändrar gubbens Y-koordinat
                     g.y = 600;
-                
-                    // Ändrar svarsalternativen
-                    d.x1 = 70;
-                    d.x2 = 130;
-                    d.ans = "Blue2";
-                
-                    // Ställer om frågorna och svaren till nästa set av frågor och svar
-                
-                    document.getElementById("fraga").innerHTML = fs[2].fraga;
-                    document.getElementById("svar1").innerHTML = fs[2].svar1;
-                    document.getElementById("svar2").innerHTML = fs[2].svar2;
-                    document.getElementById("svar3").innerHTML = fs[2].svar3;
+                    ansCounter = ansCounter ++;
+                    arrayCounter = fs[1].fraga;
+                    s.right.play();
                 }
-        } 
+            
+            if(ansCounter === 1){
+            
+            document.getElementById("fraga").innerHTML = fs[1].fraga;
+            document.getElementById("svar1").innerHTML = fs[1].svar1;
+            document.getElementById("svar2").innerHTML = fs[1].svar2;
+            document.getElementById("svar3").innerHTML = fs[1].svar3;
+        
+        
+        }
+    }
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
