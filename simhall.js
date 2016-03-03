@@ -17,10 +17,13 @@
             s,
             d,
             g,
-            fs;
-
-        var ansCounter = 0,
-            arrayCounter = fs[0].fraga;
+            fs,
+            // variabeln som håller reda på vilken fråga vi är på
+            ansCounter = 0,
+            pointCounterRight = 0,
+            pointCounterWrong = 0;
+            
+        
         
         // Klassen för våra frågor och svar
         function FragSvar(fraga,s1,s2,s3,rs){
@@ -31,9 +34,9 @@
             this.svar3 = s3;
             this.rs = rs;
         }
-
-        function Door(x1, x2){
-            
+        // Klassen för dörrarna
+        function Door(){
+            // d1 står för dörr 1, x1 är vänsterkant, x2 är högerkant
             this.d1x1 = 70;
             this.d1x2 = 130;
             this.d2x1 = 300;
@@ -59,7 +62,7 @@
                   
                   new FragSvar("Vad händer när kloret i basängen reagerar med bakterierna?", "1. Det bildas smutsiga saker i luften.", "2. Det bildas en sorts gas i luften.", "3. Det blir smutsigt på golven.", "Red"),
                   
-                  new FragSvar("Vilken åldersgrupp är sämst på att duscha innan de hoppar i basängen?", "1. 30 år och uppåt.", "2. Tånåringar, 13 - 19 år.", "3. Barn, 3 - 13 år.", "Green")];
+                  new FragSvar("Vilken åldersgrupp är sämst på att duscha innan de hoppar i basängen?", "1. Barn, 3- 13 år", "2. Tånåringar, 13 - 19 år.", "3. 30 år och uppåt.", "Green")];
             
             // Laddar bilderna och gameloopen
             c = document.getElementById("c");
@@ -71,6 +74,10 @@
             document.getElementById("svar1").innerHTML = fs[0].svar1;
             document.getElementById("svar2").innerHTML = fs[0].svar2;
             document.getElementById("svar3").innerHTML = fs[0].svar3;
+            
+            // Skriver ut poängsystemet
+            document.getElementById("pointsRight").innerHTML = "Antal rätt svar: " + pointCounterRight;
+            document.getElementById("pointsWrong").innerHTML = "Antal fel svar: " + pointCounterWrong;
         }
 
         // Gameloopen som kallar på de andra funktionerna
@@ -183,45 +190,83 @@
             }
         }
         
-        // Kollar ifall man går in i rätt eller fel dörr
+        // Kollar ifall vilken dörr man går in i, och ger ut ett värde på det
         function doorCheck(){
             
-            if(g.x > 70 && g.x < 130 && g.y === 290){
+            if(g.x > d.d1x1 && g.x < d.d1x2 && g.y === 290){
                 
                 answerCheck("Blue");
             }
             
-            if(g.x > 300 && g.x < 360 && g.y === 290){
+            if(g.x > d.d2x1 && g.x < d.d2x2 && g.y === 290){
                 
                 answerCheck("Red");
             }
             
-            if(g.x > 500 && g.x < 560 && g.y === 290){
+            if(g.x > d.d3x1 && g.x < d.d3x2 && g.y === 290){
                 
                 answerCheck("Green");
             }
         }
-
-        function answerCheck(svar){
         
-                if(arrayCounter === svar){
+        // Funktionen för svaren och frågorna
+        function answerCheck(svar){
+            
+                // Kollar ifall dörrvärdet var rätt
+                if(fs[ansCounter].rs === svar){
                     
-                    g.y = 600;
-                    ansCounter = ansCounter ++;
-                    arrayCounter = fs[1].fraga;
+                    // Flyttar tillbaka gubben till startposition och spelar ett ljud
+                    g.y = 550;
+                    g.x = 350;
+                    ansCounter = ansCounter + 1;
                     s.right.play();
+                    
+                    // Kollar ifall värdet överstiger 2, och ändrar frågor och svar till fråga 1 med respektive svar. 
+                    if( ansCounter > 2){
+                        ansCounter = 0;
+                    }
+                    
+                    // Skriver ut de nya frågorna 
+                    document.getElementById("fraga").innerHTML = fs[ansCounter].fraga;
+                    document.getElementById("svar1").innerHTML = fs[ansCounter].svar1;
+                    document.getElementById("svar2").innerHTML = fs[ansCounter].svar2;
+                    document.getElementById("svar3").innerHTML = fs[ansCounter].svar3;
+                    console.log( ansCounter );
+                    
+                    // Lägger till poäng
+                    pointCounterRight ++;
+                    document.getElementById("pointsRight").innerHTML = "Antal rätt svar: " + pointCounterRight;
                 }
             
-            if(ansCounter === 1){
-            
-            document.getElementById("fraga").innerHTML = fs[1].fraga;
-            document.getElementById("svar1").innerHTML = fs[1].svar1;
-            document.getElementById("svar2").innerHTML = fs[1].svar2;
-            document.getElementById("svar3").innerHTML = fs[1].svar3;
-        
-        
-        }
+            // Kollar ifall dörrvärdet var fel
+            else if(fs[ansCounter].rs != svar){
+                // Lägger till poäng på felmätaren
+                pointCounterWrong ++;
+                document.getElementById("pointsWrong").innerHTML = "Antal fel svar: " + pointCounterWrong;
+                
+                // Ändrar respektive dörrars svar till Fel
+                if(svar === "Blue"){
+                    
+                    document.getElementById("svar1").innerHTML = "Fel svar";
+                }
+                
+                if(svar === "Red"){
+                    
+                    document.getElementById("svar2").innerHTML = "Fel svar";
+                }
+                
+                if(svar === "Green"){
+                    
+                    document.getElementById("svar3").innerHTML = "Fel svar";
+                }
+                
+                // Flyttar tillbaka gubben till startposition
+                g.y = 550;
+                g.x = 350;
+            }
     }
+
+    
 
         
 

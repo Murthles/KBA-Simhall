@@ -12,6 +12,8 @@ body {
 
 div {
     font-family: 'Architects Daughter';
+    position: absolute;
+    left: 750px;
 }
 
 /* Positionering och utseende för frågorna och svaren */ 
@@ -19,27 +21,67 @@ div {
 #fraga {
     position: absolute;
     top: 30;
-    left: 750;
     font-size: 20px;
 }
 
 #svar1 {
     position: absolute;
     top: 90;
-    left: 750;
     color: #1919d1;
 }
 
 #svar2 {
     position: absolute;
     top: 140;
-    left: 750;
     color: #c14a4a;
 }
 
 #svar3 {
     position: absolute;
     top: 190;
-    left: 750;
     color: #2aa72a;
 }
+
+/* Positionering och utseende för poängen */
+#pointsRight {
+    
+    position: absolute;
+    top: 350;
+    left: 1000px;
+    color: black;
+    font-size: 30px;
+}
+
+#pointsWrong {
+    
+    position: absolute;
+    top: 400;
+    left: 1000px;
+    color: black;
+    font-size: 30px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
