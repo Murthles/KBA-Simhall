@@ -1,6 +1,7 @@
 /* Hämtar in ett typsnitt från Google Fonts */ 
 
 @import url(https://fonts.googleapis.com/css?family=Architects+Daughter);
+@import url(https://fonts.googleapis.com/css?family=Oswald:700);
 
 /* Bakgrundsfärg */ 
 
@@ -45,6 +46,7 @@ div {
 /* Positionering och utseende för poängen */
 #pointsRight {
     
+    font-family: 'Oswald', sans-serif;
     position: absolute;
     top: 350;
     left: 1000px;
@@ -54,11 +56,29 @@ div {
 
 #pointsWrong {
     
+    font-family: 'Oswald', sans-serif;
     position: absolute;
-    top: 400;
-    left: 1000px;
+    top: 420;
+    left: 1013px;
     color: black;
     font-size: 30px;
+}
+
+/* Positionering och utseende för din feedback och antal rätt */
+#antalRatt {
+    
+    position: absolute;
+    top: 200;
+    left: 400;
+    font-size: 50px; 
+}
+
+#feedback {
+    
+    position: absolute;
+    top: 350;
+    left: 300;
+    font-size: 50px;
 }
 
 
